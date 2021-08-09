@@ -1,0 +1,16 @@
+module top_module (
+	input [2:0] SW,      // R
+	input [1:0] KEY,     // L and clk
+	output reg [2:0] LEDR);  // Q
+    muxdf2 d1(LEDR[2],SW[0],KEY[1],KEY[0],LEDR[0]);
+    muxdf2 d2(LEDR[0],SW[1],KEY[1],KEY[0],LEDR[1]);
+    muxdf2 d3(LEDR[1]^LEDR[2],SW[2],KEY[1],KEY[0],LEDR[2]);
+
+
+endmodule
+module muxdf2(input in0,input in1,input l,input clk,output q);
+    wire d;
+    assign d=l?in1:in0;
+    always@(posedge clk)
+        q<=d;
+endmodule
