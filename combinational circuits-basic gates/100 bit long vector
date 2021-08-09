@@ -1,0 +1,19 @@
+module top_module( 
+    input [99:0] in,
+    output [98:0] out_both,
+    output [99:1] out_any,
+    output [99:0] out_different );
+    sumbef_n #(100) n1(in,out_both,out_any,out_different);
+
+endmodule
+module sumbef_n(in,out_both,out_any,out_different); 
+    parameter n=4;
+    input [n-1:0] in;
+    output [n-2:0] out_both;
+    output [n-1:1] out_any;
+    output [n-1:0] out_different;
+    assign out_both[n-2:0]=in[n-1:1]&in[n-2:0];
+    assign out_any[n-1:1]=in[n-1:1]|in[n-2:0];
+    assign out_different[n-1:0]=in[n-1:0]^{in[0],in[n-1:1]};
+
+endmodule
