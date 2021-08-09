@@ -1,0 +1,17 @@
+module top_module (
+    input clk,
+    input [7:0] d,
+    output [7:0] q
+);genvar i;
+    generate
+                for(i=0;i<8;i++)
+                   begin:loop
+                       dff_it d1(d[i],clk,q[i]);
+                   end
+    endgenerate
+
+endmodule
+module dff_it(input d,input clk,output q);
+    always@(posedge clk)
+        q<=d;
+endmodule
