@@ -1,0 +1,43 @@
+module top_module(
+    input clk,
+    input [7:0] in,
+    input reset,    // Synchronous reset
+    output done); //
+parameter S0=2'b00,S1=2'b01,S2=2'b10;
+    reg [1:0]state,next_state;
+    reg fall;
+    always@(*)
+        begin
+            
+            case(state)
+                S0:begin
+                    next_state<=in[3]?S1:S0;
+                end
+                S1:next_state<=S2;
+                S2:begin
+                    next_state<=S0;
+                end
+            endcase
+        end
+    always@(posedge clk)
+        begin
+            fall=1'b0;
+        if(reset)
+            state<=S0;
+    else if(state==S2)
+        begin
+            state<=next_state;
+            fall=1'b1;
+        end
+            else
+                state<=next_state;
+        end
+    assign done=fall; 
+                    
+    // State transition logic (combinational)
+
+    // State flip-flops (sequential)
+ 
+    // Output logic
+
+endmodule
