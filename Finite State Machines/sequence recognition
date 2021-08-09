@@ -1,0 +1,50 @@
+module top_module(
+    input clk,
+    input reset,    // Synchronous reset
+    input in,
+    output disc,
+    output flag,
+    output err);
+    parameter rest=1,flow=2,dis=3,fla=4,er=5;
+    wire [3:0]nes;
+    reg [3:0]count;
+    reg [2:0]state,next_state;
+    always@(posedge clk)
+        begin
+            if(reset)
+            begin
+                state<=rest;
+            count<=3'd0;
+            end
+            else if(state==flow && in==1)
+                begin
+                    count<=count+1;
+                    state<=next_state;
+                end
+            
+            else
+                begin
+                state<=next_state;
+                    count<=3'd0;
+                end
+        end
+                
+    
+                always@(*)
+                    begin
+                        case(state)
+                            rest:next_state=in?flow:rest;
+                            flow:next_state=in?((nes==5)?er:flow):(nes==4?dis:(nes==5?fla:rest));
+                            dis:next_state=in?flow:rest;
+                            fla:next_state=in?flow:rest;
+                            er:next_state=in?er:rest;
+                        endcase
+                    end
+     assign nes=count;       
+    assign disc=(state==dis);
+    assign flag=(state==fla);
+    assign err=(state==er);
+                
+            
+
+endmodule
