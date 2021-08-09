@@ -1,0 +1,16 @@
+`default_nettype none
+module top_module(
+    input a,
+    input b,
+    input c,
+    input d,
+    output out,
+    output out_n   ); 
+    wire x,y;
+    and a1(x,a,b);
+    and a2(y,c,d);
+    or a3(out,x,y);
+    not(out_n,out);
+    
+
+endmodule
