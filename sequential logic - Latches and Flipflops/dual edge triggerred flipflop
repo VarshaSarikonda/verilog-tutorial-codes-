@@ -1,0 +1,12 @@
+module top_module (
+    input clk,
+    input d,
+    output  q
+);wire f,l;
+    always@(posedge clk)
+    f<=d;
+    always@(negedge clk)
+        l<=d;
+    assign q=clk?f:l;
+
+endmodule
