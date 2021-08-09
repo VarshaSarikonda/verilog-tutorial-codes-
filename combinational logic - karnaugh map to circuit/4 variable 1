@@ -1,0 +1,14 @@
+module top_module(
+    input a,
+    input b,
+    input c,
+    input d,
+    output out  ); 
+    wire k1,k2,k3,k4;
+    or a1(k1,~a,~b,c);
+    or a2(k2,c,~d,~b);
+    or a3(k3,a,b,~c,~d);
+    or a4(k4,~a,~c,d);
+    and a5(out,k1,k2,k3,k4);
+
+endmodule
