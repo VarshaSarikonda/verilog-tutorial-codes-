@@ -1,0 +1,12 @@
+module top_module( 
+    input [1023:0] in,
+    input [7:0] sel,
+    output [3:0] out );
+    integer one;
+    always@(*)
+        begin
+            one=sel;
+            out[3:0]={in[4*one+3],in[4*one+2],in[4*one+1],in[4*one]};
+        end
+
+endmodule
