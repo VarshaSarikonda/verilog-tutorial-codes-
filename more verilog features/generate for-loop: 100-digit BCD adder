@@ -1,0 +1,18 @@
+module top_module( 
+    input [399:0] a, b,
+    input cin,
+    output cout,
+    output [399:0] sum );
+    genvar i;
+    wire [99:0]carryo;
+    bcd_fadd k2(a[3:0],b[3:0],cin,carryo[0],sum[3:0]);
+    generate
+        for(i=1;i<100;i++)
+            begin:yess
+                bcd_fadd k1(a[4*(i+1)-1:4*i],b[4*(i+1)-1:4*i],carryo[i-1],carryo[i],sum[4*(i+1)-1:4*i]);
+            end
+        assign cout=carryo[99];
+    endgenerate
+                
+
+endmodule
