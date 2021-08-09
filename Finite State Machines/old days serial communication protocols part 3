@@ -1,0 +1,58 @@
+module top_module(
+    input clk,
+    input in,
+    input reset,    // Synchronous reset
+    output [7:0] out_byte,
+    output done
+);parameter idle=0,start=1,stop=2,doubt=3,don=4,error=5;
+    reg [2:0]state,next_state;
+    reg [3:0]count;
+    reg [8:0]out;
+    wire outw;
+    always@(posedge clk)
+        begin
+            if(reset)
+                begin
+                state<=idle;
+                    count<=3'd0;
+                    out<=9'b0;
+                end
+            else if(state==start&&count<8)
+                begin
+                    
+                    state<=start;
+                    out[count]<= in;
+                    count<=count+3'd1;
+                end
+            else if(count==8)
+                begin
+                state<=stop;
+                    out[8]<=in;
+                    count<=3'd0;
+                end
+            else
+                    
+                begin
+                state<=next_state;
+                    count<=3'd0;
+                end
+        end
+    assign outw =^out;
+    always@(*)
+        begin
+            
+            case(state)
+                idle:next_state<=in?idle:start;
+                start:next_state<=stop;
+                stop:next_state<=in?(outw?don:error):doubt;
+                doubt:next_state<=in?idle:doubt;
+                don:begin
+                    next_state<=in?idle:start;
+                    
+                end
+                error:next_state<=in?idle:start;
+            endcase
+        end
+    assign done=(state==don)&&(^out);
+    assign out_byte=out[7:0]&{8{done}};
+endmodule
