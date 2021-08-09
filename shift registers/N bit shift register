@@ -1,0 +1,22 @@
+module top_module (
+    input [3:0] SW,
+    input [3:0] KEY,
+    output [3:0] LEDR
+); reg[3:0] doop;
+    //always@(posedge KEY[0])
+        //begin
+        //doop[3:0]<=LEDR[3:0];
+        //end
+    somux s1(KEY[0],LEDR[1],SW[0],KEY[1],KEY[2],LEDR[0]);
+    somux s2(KEY[0],LEDR[2],SW[1],KEY[1],KEY[2],LEDR[1]);
+    somux s3(KEY[0],LEDR[3],SW[2],KEY[1],KEY[2],LEDR[2]);
+    somux s4(KEY[0],KEY[3],SW[3],KEY[1],KEY[2],LEDR[3]);
+
+endmodule
+
+
+module somux(input clk,input in01,input in11,input sel0,input sel1,output reg q);
+    always@(posedge clk)
+    q<=(sel1)?in11:(sel0?in01:q);
+endmodule
+    
