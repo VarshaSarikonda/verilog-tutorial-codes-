@@ -1,0 +1,27 @@
+module a (input x, input y, output z);
+    assign z = (x^y) & x;
+
+endmodule
+    module b ( input x, input y, output z );
+     always@(*)
+    begin
+        z=1'b0;
+        if(x==y)
+        z=1'b1;
+    else
+        z=1'b0;
+    end
+
+
+endmodule
+module top_module (input x, input y, output z);
+    wire [5:0]s;
+    a a1(x,y,s[0]);
+    b a2(x,y,s[1]);
+    a a3(x,y,s[2]);
+    b a4(x,y,s[3]);
+    or a5(s[4],s[0],s[1]);
+    and a6(s[5],s[2],s[3]);
+    xor a7(z,s[4],s[5]);
+
+endmodule
