@@ -1,0 +1,38 @@
+module top_module(
+    input clk,
+    input in,
+    input reset,
+    output out); //
+parameter A=0, B=1, C=2, D=3;
+	reg [1:0] state;		
+	reg [1:0] next;
+    
+
+
+
+    // Combinational always block for state transition logic. Given the current state and inputs,
+    
+    // Combinational always block: Use blocking assignments.    
+    always@(*) begin
+		case (state)
+			A: next = in ? B : A;
+			B: next = in ? B : C;
+			C: next = in ? D : A;
+			D: next = in ? B : C;
+		endcase
+    end
+
+
+
+    // Edge-triggered always block (DFFs) for state flip-flops. Asynchronous reset.
+    always @(posedge clk) begin
+		if (reset) state <= A;
+        else state <= next;
+	end
+		
+
+		
+	// Combinational output logic. In this problem, an assign statement is the simplest.		
+	assign out = (state==D);
+	
+endmodule
