@@ -1,0 +1,42 @@
+module top_module (
+    input clk,
+    input reset,
+    input [3:1] s,
+    output fr3,
+    output fr2,
+    output fr1,
+    output reg dfr
+);  reg [3:1]present,previous;
+    //present=s;
+    always@(posedge clk)
+        begin
+            present=s;
+            if(reset)
+                begin
+            {fr3,fr2,fr1,dfr}<=4'b1111;
+                    previous=3'b000;
+                end
+            else
+                begin
+                    fr3=1'b0;fr2=1'b0;fr1=1'b0;
+                    case(present)
+                        3'b000:{fr3,fr2,fr1,dfr}<=4'b1111;
+                        3'b001:begin
+                            fr2=1'b1;
+                            fr1=1'b1;
+                            dfr<=(previous>present)?1'b1:((previous==present)?dfr:1'b0);
+                        end
+                        3'b011:begin
+                            fr1=1'b1;
+                            dfr<=(previous>present)?1'b1:((previous==present)?dfr:1'b0);
+                        end
+                        default:
+                            dfr<=1'b0;
+                    endcase
+                 previous=present;   
+                end
+                
+        end
+    
+
+endmodule
